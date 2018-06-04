@@ -59,8 +59,14 @@ git clone https://github.com/tesseract-ocr/tesseract.git tesseract-ocr
 cd tesseract
 ./autogen.sh
 autoreconf -i
-./configure --enable-debug
+./configure --enable-debug \
+    --with-extra-libraries=/usr/local/lib \
+    --with-extra-includes=/usr/local/include \
+    LDFLAGS=-L/usr/local/lib \
+    CPPFLAGS=-I/usr/local/include
+
 LDFLAGS="-L/usr/local/lib" CFLAGS="-I/usr/local/include" make
+
 sudo make install
 sudo ldconfig
 
