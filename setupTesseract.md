@@ -58,8 +58,16 @@ git clone https://github.com/tesseract-ocr/tesseract.git tesseract-ocr
 
 cd tesseract
 ./autogen.sh
+autoreconf -i
 ./configure --enable-debug
 LDFLAGS="-L/usr/local/lib" CFLAGS="-I/usr/local/include" make
 sudo make install
 sudo ldconfig
+
+# build training tool
+make training
+sudo make training-install
+# optional:
+make ScrollView.jar
+export SCROLLVIEW_PATH=$PWD/java
 ```
