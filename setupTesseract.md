@@ -85,15 +85,26 @@ make ScrollView.jar
 export SCROLLVIEW_PATH=$PWD/java
 ```
 ### create training data
+
+#### tesstrain (one command)
 ```
-# tesstrain (one command)
 ## for LSTM, enable --linedata_only
-training/tesstrain.sh --fonts_dir /usr/share/fonts \cd
+training/tesstrain.sh --fonts_dir /usr/share/fonts \
   --lang eng \
   --noextract_font_properties --langdata_dir /data/langdata \
   --output_dir /data/tesstutorial/engtrain
 ```
+
+#### step by step
 To find available fonts in a specific fonts_dir
 ```
 training/text2image --list_available_fonts --fonts_dir <the desired directory, e.g. /usr/share/fonts>
+```
+To generate the data pair, run:
+```
+training/text2image --text=training_text.txt --outputbase=[lang].[fontname].exp0 --font='Font Name' --fonts_dir=/path/to/your/fonts
+```
+To list all fonts in your system which can render the training text, run:
+```
+training/text2image --text=training_text.txt --outputbase=eng --fonts_dir=/usr/share/fonts  --find_fonts --min_coverage=1.0 --render_per_font=false
 ```
