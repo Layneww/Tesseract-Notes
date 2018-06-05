@@ -53,27 +53,47 @@ apt-get install libpango1.0-dev
 
 # clone the 4.00.00alpha branch
 git clone https://github.com/tesseract-ocr/tesseract.git --branch 4.00.00alpha --single-branch tesseract-ocr
-# clone the master branch
+# clone the master branch (beta)
 git clone https://github.com/tesseract-ocr/tesseract.git tesseract-ocr
 
 cd tesseract
 ./autogen.sh
 autoreconf -i
+
+## version 1
 ./configure --enable-debug \
     --with-extra-libraries=/usr/local/lib \
     --with-extra-includes=/usr/local/include \
     LDFLAGS=-L/usr/local/lib \
     CPPFLAGS=-I/usr/local/include
-
+make
+## version 1 ends
+## version 2
+./configure
 LDFLAGS="-L/usr/local/lib" CFLAGS="-I/usr/local/include" make
-
+## version 2 ends
 sudo make install
+sudo make install -langs # install languages
 sudo ldconfig
 
 # build training tool
 make training
 sudo make training-install
 # optional:
+apt-get install default-jdk
 make ScrollView.jar
 export SCROLLVIEW_PATH=$PWD/java
+```
+### create training data
+```
+# tesstrain (one command)
+## for LSTM, enable --linedata_only
+training/tesstrain.sh --fonts_dir /usr/share/fonts \cd
+  --lang eng \
+  --noextract_font_properties --langdata_dir /data/langdata \
+  --output_dir /data/tesstutorial/engtrain
+```
+To find available fonts in a specific fonts_dir
+```
+training/text2image --list_available_fonts --fonts_dir <the desired directory, e.g. /usr/share/fonts>
 ```
