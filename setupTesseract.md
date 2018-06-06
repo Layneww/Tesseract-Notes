@@ -43,7 +43,7 @@ cd leptonica-1.76.0
 make
 sudo make install
 ```
-
+It is sufficient to just use 1.74 version.
 ### build tesseract 4.0 alpha from source
 ```
 # library needed
@@ -95,6 +95,20 @@ training/tesstrain.sh --fonts_dir /usr/share/fonts \
   --output_dir /data/tesstutorial/engtrain
 ```
 
+### langdata
+It contains
+```
+desired_characters
+eng.numbers
+eng.punc
+eng.training_text
+eng.training_text.bigram_freqs
+eng.training_text.unigram_freqs
+eng.unicharambigs
+eng.word.bigrams
+eng.wordlist
+```
+
 #### step by step
 To find available fonts in a specific fonts_dir
 ```
@@ -102,9 +116,30 @@ training/text2image --list_available_fonts --fonts_dir <the desired directory, e
 ```
 To generate the data pair, run:
 ```
-training/text2image --text=training_text.txt --outputbase=[lang].[fontname].exp0 --font='Font Name' --fonts_dir=/path/to/your/fonts
+training/text2image --fonts_dir=/usr/share/fonts --text=training_text.txt --outputbase=[lang].[fontname].exp0 --font='Font Name' 
 ```
+```--output_individual_glyph_images```: If true also outputs individual character images  (type:bool default:false)
+
+To save both the box/tiff and glphs data,
+```
+training/text2image --text=/data/langdata/eng/eng.training_text --outputbase=/data/text2image/eng/eng.Lato.exp0 --font='Liberation Sans' --output_individual_glyph_images=true --fonts_dir=/usr/share/fonts --glyph_resized_size=300
+```
+
 To list all fonts in your system which can render the training text, run:
 ```
 training/text2image --text=training_text.txt --outputbase=eng --fonts_dir=/usr/share/fonts  --find_fonts --min_coverage=1.0 --render_per_font=false
 ```
+
+
+#### training from scratch
+```
+mkdir -p ~/tesstutorial/engoutput
+training/lstmtraining --debug_interval 100 \
+  --traineddata ~/tesstutorial/engtrain/eng/eng.traineddata \
+  --net_spec '[1,36,0,1 Ct3,3,16 Mp3,3 Lfys48 Lfx96 Lrx96 Lfx256 O1c111]' \
+  --model_output ~/tesstutorial/engoutput/base --learning_rate 20e-4 \
+  --train_listfile ~/tesstutorial/engtrain/eng.training_files.txt \
+  --eval_listfile ~/tesstutorial/engeval/eng.training_files.txt \
+  --max_iterations 5000 &>~/tesstutorial/engoutput/basetrain.log
+```
+
