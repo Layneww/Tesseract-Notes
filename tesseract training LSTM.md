@@ -7,10 +7,9 @@
 ### Input and Output of the model
 #### Input
 - Prepare:
-  - text
-  - 
+  - text: create lstmf
+  - unicharset, recoder
 - Step: 
-  - 
 
 ### Key functions and the purpose
 #### tesstrain.sh
