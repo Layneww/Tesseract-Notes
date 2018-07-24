@@ -84,6 +84,15 @@ apt-get install default-jdk
 make ScrollView.jar
 export SCROLLVIEW_PATH=$PWD/java
 ```
+
+### install tesserocr
+```
+# copy the osdetect.h to the local library
+cp ./tesseract/src/ccmain/osdetect.h /usr/local/include/tesseract/
+pip install tesserocr
+```
+
+
 ### create training data
 
 #### tesstrain (one command)
