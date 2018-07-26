@@ -44,34 +44,38 @@ make
 sudo make install
 ```
 It is sufficient to just use 1.74 version.
-### build tesseract 4.0 alpha from source
+### build tesseract from source
 ```
 # library needed
 apt-get install autoconf-archive automake g++ libtool libleptonica-dev make pkg-config
 apt-get install asciidoc
 apt-get install libpango1.0-dev
 
-# clone the 4.00.00alpha branch
-git clone https://github.com/tesseract-ocr/tesseract.git --branch 4.00.00alpha --single-branch tesseract-ocr
 # clone the master branch (beta)
 git clone https://github.com/tesseract-ocr/tesseract.git tesseract-ocr
+
+# clone the 4.00.00alpha branch
+git clone https://github.com/tesseract-ocr/tesseract.git --branch 4.00.00alpha --single-branch tesseract-ocr
 
 cd tesseract
 ./autogen.sh
 autoreconf -i
 
-## version 1
+# choose either version 1 or 2 to make the project
+### version 1 (RECOMMENDED) ###
+./configure
+LDFLAGS="-L/usr/local/lib" CFLAGS="-I/usr/local/include" make
+### version 1 ends ###
+
+### version 2 ###
 ./configure --enable-debug \
     --with-extra-libraries=/usr/local/lib \
     --with-extra-includes=/usr/local/include \
     LDFLAGS=-L/usr/local/lib \
     CPPFLAGS=-I/usr/local/include
 make
-## version 1 ends
-## version 2
-./configure
-LDFLAGS="-L/usr/local/lib" CFLAGS="-I/usr/local/include" make
-## version 2 ends
+### version 2 ends ###
+
 sudo make install
 sudo make install -langs # install languages
 sudo ldconfig
@@ -85,6 +89,8 @@ make ScrollView.jar
 export SCROLLVIEW_PATH=$PWD/java
 ```
 
+# Build other wrappers
+
 ### install tesserocr
 ```
 # copy the osdetect.h to the local library
@@ -92,7 +98,7 @@ cp ./tesseract/src/ccmain/osdetect.h /usr/local/include/tesseract/
 pip install tesserocr
 ```
 
-
+# Use of some binaries of tesseract
 ### create training data
 
 #### tesstrain (one command)
